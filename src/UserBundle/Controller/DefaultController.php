@@ -19,40 +19,40 @@ class DefaultController extends Controller
      */
     public function indexAction(Request $request)
     {
-        $user=new adduser();
+        $user = new adduser();
         $user->setPassword("Test");
         $user->setName("Test");
 
         $form = $this->createFormBuilder($user)
-            ->add('name','text')
-            ->add('password','password')
-            ->add('save','submit',array('label'=>'Create User'))
+            ->add('name', 'text')
+            ->add('password', 'password')
+            ->add('save', 'submit', array('label' => 'Create User'))
             ->getForm();
 
         $form->handleRequest($request);
 
-        if($form->isSubmitted()&& $form->isValid())
-        {
-            $img=new Image();
+        if ($form->isSubmitted() && $form->isValid()) {
+            $img = new Image();
             $img->setAlt("image de test");
             $img->setUrl("http://sdz-upload.s3.amazonaws.com/prod/upload/job-de-reve.jpg");
 
             $name = $form->get("name")->getData();
-            $pwd= $form->get("password")->getData();
+            $pwd = $form->get("password")->getData();
             $user = new User();
             //$user ->setId();
-            $user ->setName($name);
-            $user ->setPassword($pwd);
+            $user->setName($name);
+            $user->setPassword($pwd);
             $user->setImage($img);
 
-            $rep=$this->getDoctrine()->getManager()->getRepository(User::class);
+            $rep = $this->getDoctrine()->getManager()->getRepository(User::class);
 
-            $result=$rep->addUser($user);
+            $result = $rep->addUser($user);
 
-            return $this->render('affichage/Ajouter.html.twig',array('form'=> $form->createView(),'result'=> $result));
+            return $this->render('affichage/Ajouter.html.twig', array('form' => $form->createView(), 'result' => $result));
         }
-        return $this->render('affichage/Ajouter.html.twig',array('form'=> $form->createView()));
+        return $this->render('affichage/Ajouter.html.twig', array('form' => $form->createView()));
     }
+
     /**
      * @Route("/Connexion", name="Usercnx")
      */
@@ -60,9 +60,10 @@ class DefaultController extends Controller
     {
 
         //return $this->render('affichage/connexion.html.twig');
-        $content = $this->get('templating')->render('affichage/connexion.html.twig',array('nom'=>'Imad'));
+        $content = $this->get('templating')->render('affichage/connexion.html.twig', array('nom' => 'Imad'));
         return new response($content);
     }
+
     /**
      * @Route("/verification", name="verif")
      */
@@ -70,12 +71,12 @@ class DefaultController extends Controller
     {
 
         $name = $request->request->get('name');
-        $pwd=$request->request->get('pwd');
+        $pwd = $request->request->get('pwd');
 
         $user = new User();
         //$user ->setId();
-        $user ->setName($name);
-        $user ->setPassword($pwd);
+        $user->setName($name);
+        $user->setPassword($pwd);
 
         $repository = $this->getDoctrine()
             ->getRepository(User::class);
@@ -89,12 +90,9 @@ class DefaultController extends Controller
             ->find("5");
         */
 
-        if(!$user2)
-        {
+        if (!$user2) {
             return new Response('KO');
-        }
-        else
-        {
+        } else {
 
             $this->container->get('request')->getSession()->set('MyUser', $user2->getname());
 
@@ -108,13 +106,14 @@ class DefaultController extends Controller
     public function listerclAction(Request $request)
     {
         $userRep = $this->getDoctrine()->getManager()->getRepository(User::class);
-        
+
         $result = $userRep->listUser();
-        
+
         //var_dump($result);die();
         $this->container->get('request')->getSession()->set('AllUsers', $result);
         return $this->render('affichage/ListCls.html.twig');
     }
+
     /**
      * @Route("/Modifier", name="modif")
      */
@@ -129,6 +128,7 @@ class DefaultController extends Controller
 
         return $this->render('affichage/Modifier.html.twig');
     }
+
     /**
      * @Route("/suprimer", name="delete")
      */
@@ -136,27 +136,23 @@ class DefaultController extends Controller
     {
 
         $list = $request->request->get('check');
-        $result=0;
-        for($i=0;$i<sizeof($list);$i++)
-        {
-            
-            $delUser=$this->getDoctrine()->getManager()->getRepository(User::class);
+        $result = 0;
+        for ($i = 0; $i < sizeof($list); $i++) {
+
+            $delUser = $this->getDoctrine()->getManager()->getRepository(User::class);
             $delUser->deleteUser($list[$i]);
-            $result=$result+1;
+            $result = $result + 1;
 
         }
-        if($result==1) {
-            return new Response('Supression '.$result.' User');
+        if ($result == 1) {
+            return new Response('Supression ' . $result . ' User');
+        } else {
+            return new Response('Supression ' . sizeof($list) . ' User');
         }
-        else
-        {
-            return new Response('Supression '.sizeof($list).' User');
-        }
-
-
 
 
     }
+
     /**
      * @Route("/modid", name="modid")
      */
@@ -164,20 +160,26 @@ class DefaultController extends Controller
     {
 
         $id = $request->request->get('objmodif');
-        $name=$request->request->get('newname');
-        $password=$request->request->get('newpassword');
+        $name = $request->request->get('newname');
+        $password = $request->request->get('newpassword');
 
-        
 
         /*if(!$user)
         {
             throw $this->createNotFoundException('No user fount for id'.$user);
         }
 */
-        $delUser=$this->getDoctrine()->getManager()->getRepository(User::class);
-        $delUser->modifUser($id,$name,$password);
+        $delUser = $this->getDoctrine()->getManager()->getRepository(User::class);
+        $delUser->modifUser($id, $name, $password);
 
 
+        return $this->redirectToRoute('listeclient');
+    }
+    /**
+     * @Route("/testgit",name="Git")
+     */
+    public function testGit(Request $request)
+    {
         return $this->redirectToRoute('listeclient');
     }
 }
