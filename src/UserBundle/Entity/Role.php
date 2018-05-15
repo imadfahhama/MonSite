@@ -18,7 +18,7 @@ class Role
 
     /**
      * @return mixed
-     */git
+     */
     public function getUser()
     {
         return $this->user;
