@@ -1,0 +1,17 @@
+{% extends "base.html.twig" %}
+{% block title %}Acceuil{% endblock %}
+        {% block users %}
+
+               Bienvenue Mr {{ app.session.get('MyUser') }}
+        {% endblock %}
+
+    {% block body %}
+        Découvrez notre agence !
+        Smile Maroc a été la première agence Smile à franchir les frontières françaises !
+
+        Présents depuis 2004 à Casablanca, nous sommes fiers d'être la première agence internationale du groupe. Grâce à l'enthousiasme débordant de nos 50 experts PHP et ERP, Smile Maroc contribue activement à la réalisation de vos projets digitaux, à la fois sur les marchés français et marocain.
+
+        Pour répondre au mieux à vos besoins, notre agence s'organise autour de deux pôles complémentaires :
+        •	Le pôle Local qui accompagne les grands comptes marocains (Orange, OCP, Bank Al-Maghrib, ONCF, Ministéres, Al Omran...) en apportant des solutions open source pérennes, matures et à forte valeur ajoutée.
+        •	Le pôle Skill Center Groupe qui représente plus de 70% du chiffre d’affaires de l’agence grâce à plusieurs CDS (Centres De Service) pour plusieurs grands comptes.
+    {% endblock %}

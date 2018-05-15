@@ -1,0 +1,16 @@
+{% extends "base.html.twig" %}
+{% block title %}Liste Clients{% endblock %}
+        {% block users %}
+
+               Bienvenue Mr {{ app.session.get('MyUser') }}
+        {% endblock %}
+    {% block body %}
+        <table border="1" align="center">
+            <tr><th>Id</th><th>Name</th><th>Password</th></tr>
+        {% for User in app.session.get('AllUsers') %}
+            <tr><td width="200px" align="center">#{{ User.id }}</td><td width="200px" align="center">{{ User.name }}</td>
+                <td width="200px" align="center">{{ User.password }}</td></tr>
+
+        {% endfor %}
+        </table>
+    {% endblock %}
