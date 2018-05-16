@@ -54,6 +54,7 @@ class Role
     public function setId($id)
     {
         $this->id = $id;
+        //Test
     }
 
     /**
